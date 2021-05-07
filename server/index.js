@@ -8,16 +8,26 @@ const queryAsync = Promise.promisify(db.query).bind(db);
 const getQuestionsByProductId = (productId) => {
   return queryAsync(`SELECT * FROM questions WHERE product_id = ${productId}`);
 };
+
 const getAnswersByQuestionId = (questionId) => {
   return queryAsync(`SELECT * FROM answers WHERE id_questions = ${questionId}`);
 };
+
 const getPhotosByAnswerId = (answerId) => {
   return queryAsync(`SELECT * FROM photos WHERE id_answers = ${answerId}`);
 };
 
 const insertQuestionByProductId = (questionFields) => {
   return queryAsync('INSERT INTO questions (product_id, question_body, question_date, asker_name, asker_email, reported, question_helpfulness) VALUES (?,?,?,?,?,?,?)', questionFields);
-}
+};
+
+const insertAnswerByQuestionId = (answerFields) => {
+  return queryAsync('INSERT INTO answers (id_questions, body, date, answerer_name, answerer_email, reported, helpfulness) VALUES (?,?,?,?,?,?,?)', answerFields);
+};
+
+const updateQuestionHelpful = (questionId) => {
+  return queryAsync(`UPDATE questions SET question_helpfulness = question_helpfulness + 1 WHERE question_id = ${questionId}`);
+};
 
 let app = express();
 
@@ -50,7 +60,7 @@ app.get('/qa/questions', (req, res, next) => {
               });
             }
             question.answers = answerData;
-            console.log('concatted? answer data: ', answerData);
+            //console.log('concatted? answer data: ', answerData);
           })
           .catch((error) => {
             console.error('Answer fetch error: ', error);
@@ -89,12 +99,10 @@ app.get('/qa/questions/:question_id/answers', (req, res, next) => {
 // ============ QUESTIONS POST ==========================
 
 app.post('/qa/questions', (req, res, next) => {
-  console.log(req.body);
   let {body, name, email, product_id} = req.body;
   let questionRow = [product_id, body, new Date(), name, email, 0, 0];
   insertQuestionByProductId(questionRow)
-    .then((response) => {
-      console.log('DB response: ', response);
+    .then(() => {
       res.status(299);
       res.end();
     })
@@ -106,10 +114,34 @@ app.post('/qa/questions', (req, res, next) => {
 
 });
 
-/*
-const insertQuestionByProductId = (questionFields) => {
-  return queryAsync(`INSERT INTO questions (product_id, question_body, question_date, asker_name, asker_email, reported, helpfulness) VALUES ?`, questionFields);
-}
-*/
+// ================ ANSWER POST ====================
+
+app.post('/qa/questions/:question_id/answers', (req, res, next) => {
+  let {body, name, email, photos} = req.body;
+  let answerRow = [Number(req.params.question_id), body, new Date(), name, email, 0, 0];
+  insertAnswerByQuestionId(answerRow)
+    .then(() => {
+      res.status(201);
+      res.end();
+    })
+    .catch((error) => {
+      console.error('answer insert error: ', error);
+      res.status(500);
+      res.end();
+    })
+})
+
+// ============== MARK QUESTION HELPFUL ====================
+
+app.put('/qa/questions/:question_id/helpful', (req, res, next) => {
+  updateQuestionHelpful(req.params.question_id)
+    .then(() => {
+      res.status(204);
+      res.end();
+    })
+    .catch((error) => {
+      console.error('question helpful error: ', error);
+    });
+})
 
 module.exports = app;
