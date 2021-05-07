@@ -29,6 +29,18 @@ const updateQuestionHelpful = (questionId) => {
   return queryAsync(`UPDATE questions SET question_helpfulness = question_helpfulness + 1 WHERE question_id = ${questionId}`);
 };
 
+const updateQuestionReport = (questionId) => {
+  return queryAsync(`UPDATE questions SET reported = 1 WHERE question_id = ${questionId}`);
+};
+
+const updateAnswerHelpful = (answerId) => {
+  return queryAsync(`UPDATE answers SET helpfulness = helpfulness + 1 WHERE answer_id = ${answerId}`);
+};
+
+const updateAnswerReport = (answerId) => {
+  return queryAsync(`UPDATE answers SET reported = 1 WHERE answer_id = ${answerId}`);
+};
+
 let app = express();
 
 app.use(bodyParser.json());
@@ -142,6 +154,45 @@ app.put('/qa/questions/:question_id/helpful', (req, res, next) => {
     .catch((error) => {
       console.error('question helpful error: ', error);
     });
-})
+});
+
+// ============== REPORT QUESTION =======================
+
+app.put('/qa/questions/:question_id/report', (req, res, next) => {
+  updateQuestionReport(req.params.question_id)
+    .then(() => {
+      res.status(204);
+      res.end();
+    })
+    .catch((error) => {
+      console.error('question report error: ', error);
+    });
+});
+
+// ============= MARK ANSWER HELPFUL ======================
+
+app.put('/qa/answers/:answer_id/helpful', (req, res, next) => {
+  updateAnswerHelpful(req.params.answer_id)
+    .then(() => {
+      res.status(204);
+      res.end();
+    })
+    .catch((error) => {
+      console.error('answer helpful update error: ', error);
+    });
+});
+
+// =========== REPORT ANSWER =============================
+
+app.put('/qa/answers/:answer_id/report', (req, res, next) => {
+  updateAnswerReport(req.params.answer_id)
+    .then(() => {
+      res.status(204);
+      res.end();
+    })
+    .catch((error) => {
+      console.error('answer report error: ', error);
+    });
+});
 
 module.exports = app;
