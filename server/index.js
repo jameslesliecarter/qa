@@ -7,42 +7,6 @@ const bodyParser = require('body-parser');
 const q = require('./query.js');
 const format = require('../lib/format.js');
 
-// const getQuestionsByProductId = (productId) => {
-//   return queryAsync(`SELECT * FROM questions WHERE product_id = ${productId}`);
-// };
-
-// const getAnswersByQuestionId = (questionId) => {
-//   return queryAsync(`SELECT * FROM answers WHERE id_questions = ${questionId}`);
-// };
-
-// const getPhotosByAnswerId = (answerId) => {
-//   return queryAsync(`SELECT * FROM photos WHERE id_answers = ${answerId}`);
-// };
-
-// const insertQuestionByProductId = (questionFields) => {
-//   return queryAsync('INSERT INTO questions (product_id, question_body, question_date, asker_name, asker_email, reported, question_helpfulness) VALUES (?,?,?,?,?,?,?)', questionFields);
-// };
-
-// const insertAnswerByQuestionId = (answerFields) => {
-//   return queryAsync('INSERT INTO answers (id_questions, body, date, answerer_name, answerer_email, reported, helpfulness) VALUES (?,?,?,?,?,?,?)', answerFields);
-// };
-
-// const updateQuestionHelpful = (questionId) => {
-//   return queryAsync(`UPDATE questions SET question_helpfulness = question_helpfulness + 1 WHERE question_id = ${questionId}`);
-// };
-
-// const updateQuestionReport = (questionId) => {
-//   return queryAsync(`UPDATE questions SET reported = 1 WHERE question_id = ${questionId}`);
-// };
-
-// const updateAnswerHelpful = (answerId) => {
-//   return queryAsync(`UPDATE answers SET helpfulness = helpfulness + 1 WHERE answer_id = ${answerId}`);
-// };
-
-// const updateAnswerReport = (answerId) => {
-//   return queryAsync(`UPDATE answers SET reported = 1 WHERE answer_id = ${answerId}`);
-// };
-
 let app = express();
 
 app.use(bodyParser.json());
@@ -65,7 +29,7 @@ app.get('/qa/questions/', (req, res) => {
 app.get('/qa/questions/:question_id/answers', (req, res) => {
   page = req.query.page ? req.query.page : 1;
   count = req.query.count ? req.query.count : 5;
-  q.getAnswers(req.query.question_id, page, count, 'answers')
+  q.getAnswers(req.params.question_id, page, count, 'answers')
     .then((data) => {
       res.json(data);
       res.status(200);

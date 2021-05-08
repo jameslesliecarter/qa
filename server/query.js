@@ -13,16 +13,16 @@ const getAnswers = async(id, page, count, layout) => {
   }
   answers = layout === 'answers' ?
   format.answers(answers, id, page, count) :
-  format.questionAnswers(answers, id, page, count);
+  format.questionAnswers(answers);
   return answers;
 }
 
 const getQuestions = async(id, page, count) => {
-  let questions = await db.query(`SELECT * FROM questions WHERE question_id = ${id}`);
+  let questions = await db.query(`SELECT * FROM questions WHERE product_id = ${id}`);
   for (let i = 0; i < questions.length; i ++) {
     questions[i].answers = await getAnswers(questions[i].question_id, 1, 99, 'questions');
   }
-  questions = format.questions(questions, id);
+  questions = format.questions(questions, id, count);
   return questions;
 }
 
