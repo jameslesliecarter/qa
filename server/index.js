@@ -49,13 +49,23 @@ app.use(bodyParser.json());
 
 // // ========== QUESTIONS GET =======================
 
+app.get('/qa/questions/', (req, res) => {
+  page = req.query.page ? req.query.page : 1;
+  count = req.query.count ? req.query.count: 5;
+  q.getQuestions(req.query.product_id, page, count)
+    .then((data) => {
+      res.json(data);
+      res.status(200);
+      res.end();
+    })
+})
 
 // //================ ANSWERS GET============================
 
 app.get('/qa/questions/:question_id/answers', (req, res) => {
   page = req.query.page ? req.query.page : 1;
   count = req.query.count ? req.query.count : 5;
-  q.getAnswers(req.params.question_id, page, count)
+  q.getAnswers(req.query.question_id, page, count, 'answers')
     .then((data) => {
       res.json(data);
       res.status(200);
