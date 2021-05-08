@@ -31,6 +31,18 @@ const postQuestion = async(body, name, email, productId) => {
   return question;
 };
 
+const postAnswer = async(id, body, name, email, photos) => {
+  let answer = await db.query('INSERT INTO answers (id_questions, body, date, answerer_name, answerer_email, reported, helpfulness) VALUES (?,?,?,?,?,?,?)', [id, body, new Date(), name, email, 0, 0]);
+  let {insertId} = answer;
+  for (let i = 0; i < photos.length; i ++) {
+    await db.query('INSERT INTO photos (id_answers, url) VALUES (?,?)', [insertId, photos[i]]);
+  }
+};
+
+const postPhoto = async() => {
+
+};
+
 const helpfulQuestion = async(id) => {
   let question = await db.query(`UPDATE questions SET question_helpfulness = question_helpfulness + 1 WHERE question_id = ${id}`)
   return question;
@@ -59,5 +71,7 @@ module.exports = {
   helpfulQuestion,
   reportQuestion,
   helpfulAnswer,
-  reportAnswer
+  reportAnswer,
+  postAnswer,
+  postPhoto
 }
