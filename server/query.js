@@ -39,10 +39,6 @@ const postAnswer = async(id, body, name, email, photos) => {
   }
 };
 
-const postPhoto = async() => {
-
-};
-
 const helpfulQuestion = async(id) => {
   let question = await db.query(`UPDATE questions SET question_helpfulness = question_helpfulness + 1 WHERE question_id = ${id}`)
   return question;
@@ -73,5 +69,4 @@ module.exports = {
   helpfulAnswer,
   reportAnswer,
   postAnswer,
-  postPhoto
 }
