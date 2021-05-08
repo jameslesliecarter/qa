@@ -39,7 +39,17 @@ app.get('/qa/questions/:question_id/answers', (req, res) => {
 
 // // ============ QUESTIONS POST ==========================
 
-
+app.post('/qa/questions', (req, res) => {
+  let {body, name, email, product_id} = req.body;
+  q.postQuestion(body, name, email, product_id)
+    .then((response) => {
+      res.status(200);
+      res.end();
+    })
+    .catch((error) => {
+      console.error('Question POST error: ', error);
+    });
+});
 
 // // ================ ANSWER POST ====================
 
@@ -47,27 +57,54 @@ app.get('/qa/questions/:question_id/answers', (req, res) => {
 
 // // ============== MARK QUESTION HELPFUL ====================
 
-
+app.put('/qa/questions/:question_id/helpful', (req, res) => {
+  q.helpfulQuestion(req.params.question_id)
+    .then(() => {
+      res.status(204);
+      res.end();
+    })
+    .catch((error) => {
+      console.error('Question helpfulness PUT error: ', error);
+    });
+});
 
 // // ============== REPORT QUESTION =======================
 
-
+app.put('/qa/questions/:question_id/report', (req, res) => {
+  q.reportQuestion(req.params.question_id)
+    .then(() => {
+      res.status(204);
+      res.end();
+    })
+    .catch((error) => {
+      console.error('Question report PUT error: ', error);
+    });
+});
 
 // // ============= MARK ANSWER HELPFUL ======================
 
-
+app.put('/qa/answers/:answer_id/helpful', (req, res) => {
+  q.helpfulAnswer(req.params.answer_id)
+    .then(() => {
+      res.status(204);
+      res.end();
+    })
+    .catch((error) => {
+      console.error('Answer helpfulness PUT error: ', error);
+    });
+});
 
 // // =========== REPORT ANSWER =============================
 
-
-
-app.get('/test', (req, res) => {
-  q.getPhotos(132)
-    .then(data => {
-      console.log(format.photos(data));
-      res.status(200);
+app.put('/qa/answers/:answer_id/report', (req, res) => {
+  q.reportAnswer(req.params.answer_id)
+    .then(() => {
+      res.status(204);
       res.end();
     })
-})
+    .catch((error) => {
+      console.error('Answer report PUT error: ', error);
+    });
+});
 
 module.exports = app;
