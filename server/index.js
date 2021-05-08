@@ -1,9 +1,5 @@
 const express = require('express');
-const _ = require('underscore');
 const bodyParser = require('body-parser');
-// const db = require('../database/index.js');
-// const Promise = require('bluebird');
-// const queryAsync = Promise.promisify(db.query).bind(db);
 const q = require('./query.js');
 const format = require('../lib/format.js');
 
