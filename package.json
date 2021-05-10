@@ -1,0 +1,37 @@
+{
+  "name": "qa",
+  "version": "1.0.0",
+  "description": "qa backend for Catwalk project",
+  "main": "server/start.js",
+  "scripts": {
+    "test": "jest  --detectOpenHandles",
+    "test:watch": "jest --detectOpenHandles --watch",
+    "serve": "npx nodemon"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jameslesliecarter/qa.git"
+  },
+  "author": "Jim Carter",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jameslesliecarter/qa/issues"
+  },
+  "homepage": "https://github.com/jameslesliecarter/qa#readme",
+  "dependencies": {
+    "bluebird": "^3.5.1",
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "fast-csv": "^4.3.6",
+    "mongoose": "^5.12.7",
+    "mysql": "^2.18.1",
+    "nodemon": "^2.0.7",
+    "promise-mysql": "^5.0.3",
+    "sequelize": "^6.6.2",
+    "underscore": "^1.13.1"
+  },
+  "devDependencies": {
+    "jest": "^26.6.3",
+    "supertest": "^6.1.3"
+  }
+}

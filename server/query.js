@@ -40,22 +40,23 @@ const postAnswer = async(id, body, name, email, photos) => {
 };
 
 const helpfulQuestion = async(id) => {
-  let question = await db.query(`UPDATE questions SET question_helpfulness = question_helpfulness + 1 WHERE question_id = ${id}`)
+  let question = await db.query(`UPDATE questions SET question_helpfulness = question_helpfulness + 1 WHERE question_id = ${id}`);
+  await db.close;
   return question;
 };
 
 const reportQuestion = async(id) => {
-  let question = await db.query(`UPDATE questions SET reported = 1 WHERE question_id = ${id}`)
+  let question = await db.query(`UPDATE questions SET reported = 1 WHERE question_id = ${id}`);
   return question;
 };
 
 const helpfulAnswer = async(id) => {
-  let answer = await db.query(`UPDATE answers SET helpfulness = helpfulness + 1 WHERE answer_id = ${id}`)
+  let answer = await db.query(`UPDATE answers SET helpfulness = helpfulness + 1 WHERE answer_id = ${id}`);
   return answer;
 };
 
 const reportAnswer = async(id) => {
-  let answer = await db.query(`UPDATE answers SET reported = 1 WHERE answer_id = ${id}`)
+  let answer = await db.query(`UPDATE answers SET reported = 1 WHERE answer_id = ${id}`);
   return answer;
 };
 
