@@ -71,7 +71,11 @@ app.post('/qa/questions', (req, res) => {
 
 app.post('/qa/questions/:question_id/answers', (req, res) => {
   let {body, name, email, photos} = req.body;
-  q.postAnswer(req.params.question_id, body, name, email, photos)
+  if(!(body && name && email && photos)){
+    res.status(500);
+    res.end();
+  } else {
+    q.postAnswer(req.params.question_id, body, name, email, photos)
     .then(() => {
       res.status(201);
       res.end();
@@ -81,6 +85,7 @@ app.post('/qa/questions/:question_id/answers', (req, res) => {
       res.status(500);
       res.end();
     });
+  }
 });
 
 // // ============== MARK QUESTION HELPFUL ====================

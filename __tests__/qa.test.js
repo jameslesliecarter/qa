@@ -77,3 +77,70 @@ describe('Testing Questions POST Endpoints', () => {
     done();
   });
 });
+
+describe('Testing Answers POST Endpoints', () => {
+  it('Should post a well-formatted answer', async done => {
+    const response = await request.post('/qa/questions/100/answers')
+    .send({
+      'body': 'this is a test answer',
+      'name': 'jimmy jam',
+      'email': 'jim@jam.jum',
+      'photos': ['https://images.unsplash.com/photo-1530519729491-aea5b51d1ee1?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1651&q=80']
+    });
+    expect(response.status).toBe(201);
+    const answerGet = await request.get('/qa/questions/100/answers');
+    expect(answerGet.body.results[answerGet.body.results.length - 1].body).toBe('this is a test answer');
+    done();
+  });
+  it('Should fail on poorly formatted answers', async done => {
+    const response = await request.post('/qa/questions/100/answers')
+    .send({
+      'body': 'this is a test body',
+      'name': 'jimmothy',
+      'photos': []
+    });
+    expect(response.status).toBe(500);
+    done();
+  });
+});
+
+describe('Question and Answer Helpfulness and Reporting endpoints', () => {
+  it('Should increment question helpfulness on PUT', async done => {
+    const qBeforeInc = await request.get('/qa/questions/?product_id=100');
+    const hBeforeInc = qBeforeInc.body.results[0].question_helpfulness;
+    const id = qBeforeInc.body.results[0].question_id;
+    await request.put(`/qa/questions/${id}/helpful`);
+    const qAfterInc = await request.get('/qa/questions/?product_id=100');
+    const hAfterInc = qAfterInc.body.results[0].question_helpfulness;
+    expect(hAfterInc).toBe(hBeforeInc + 1);
+    done();
+  });
+  it('Should increment answer helpfulness on PUT', async done => {
+    const aBeforeInc = await request.get('/qa/questions/326/answers');
+    const hBeforeInc = aBeforeInc.body.results[0].helpfulness;
+    const id = aBeforeInc.body.results[0].answer_id;
+    await request.put(`/qa/answers/${id}/helpful`);
+    const aAfterInc = await request.get('/qa/questions/326/answers');
+    const hAfterInc = aAfterInc.body.results[0].helpfulness;
+    expect(hAfterInc).toBe(hBeforeInc + 1);
+    done();
+  });
+  it('Should set to 1 question reported value on PUT', async done => {
+    const qBeforeInc = await request.get('/qa/questions/?product_id=100');
+    const id = qBeforeInc.body.results[0].question_id;
+    await request.put(`/qa/questions/${id}/report`);
+    const qAfterInc = await request.get('/qa/questions/?product_id=100');
+    const rAfterInc = qAfterInc.body.results[0].reported;
+    expect(rAfterInc).toBe(1);
+    done();
+  });
+  it('Should set to 1 answer reported on PUT', async done => {
+    const aBeforeInc = await request.get('/qa/questions/326/answers');
+    const id = aBeforeInc.body.results[0].answer_id;
+    await request.put(`/qa/answers/${id}/report`);
+    const aAfterInc = await request.get('/qa/questions/326/answers');
+    const rAfterInc = aAfterInc.body.results[0].reported;
+    expect(rAfterInc).toBe(1);
+    done();
+  });
+});
