@@ -11,3 +11,4 @@ database/db_schemas/mongo-schema.js
 database/db_schemas/postgres-schema.js
 database/scripts/time_flattener.js
 database/scripts/
+coverage/

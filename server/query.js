@@ -7,7 +7,7 @@ const getPhotos = async(id) => {
 };
 
 const getAnswers = async(id, page, count, layout) => {
-  let answers = await db.query(`SELECT * FROM answers WHERE id_questions = ${id}`);
+  let answers = await db.query(`SELECT * FROM answers WHERE id_questions = ${id} AND reported = 0`);
   for (let i = 0; i < answers.length; i ++) {
     answers[i].photos = await getPhotos(answers[i].answer_id);
   }
@@ -18,7 +18,7 @@ const getAnswers = async(id, page, count, layout) => {
 };
 
 const getQuestions = async(id, page, count) => {
-  let questions = await db.query(`SELECT * FROM questions WHERE product_id = ${id}`);
+  let questions = await db.query(`SELECT * FROM questions WHERE product_id = ${id} AND reported = 0`);
   for (let i = 0; i < questions.length; i ++) {
     questions[i].answers = await getAnswers(questions[i].question_id, 1, 99, 'questions');
   }
