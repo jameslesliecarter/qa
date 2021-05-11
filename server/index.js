@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const q = require('./query.js');
-const format = require('../lib/format.js');
+const format = require('./lib/format.js');
 
 let app = express();
 
@@ -60,7 +60,6 @@ app.post('/qa/questions', (req, res) => {
       res.end();
     })
     .catch((error) => {
-      console.error('qa post error: ', error);
       res.status(500);
       res.end();
     });
@@ -97,7 +96,8 @@ app.put('/qa/questions/:question_id/helpful', (req, res) => {
       res.end();
     })
     .catch((error) => {
-      console.error('Question helpfulness PUT error: ', error);
+      res.status(500);
+      res.end();
     });
 });
 
@@ -141,8 +141,10 @@ app.put('/qa/answers/:answer_id/report', (req, res) => {
 });
 
 // ===== TEST=====
-app.post('/test', (req, res) => {
-  console.log(req.body);
+app.get('/test', (req, res) => {
+  console.log('host: ', req.headers.host);
+  res.status(200);
+  res.send('hello world');
   res.end();
 });
 

@@ -1,5 +1,5 @@
-const db = require('../database/index.js');
-const format = require('../lib/format.js');
+const db = require('./lib/database.js');
+const format = require('./lib/format.js');
 
 const getPhotos = async(id) => {
   let photos = await db.query(`SELECT * FROM photos WHERE id_answers = ${id}`);

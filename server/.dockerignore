@@ -1,0 +1,7 @@
+node_modules
+npm-debug.log
+assets
+__tests__
+coverage
+database/db_schemas
+database/scripts
