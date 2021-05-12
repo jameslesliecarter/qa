@@ -10,7 +10,7 @@ services:
     ports:
       - "3306:3306"
     volumes:
-      - /home/ec2-user/var/lib/mysql/qanda_bk.sql:/docker-entrypoint-initdb.d/qanda_bk.sql
+      - /home/ec2-user/qanda_bk.sql:/docker-entrypoint-initdb.d/qanda_bk.sql
     environment:
       MYSQL_ROOT_PASSWORD: "student"
       MYSQL_DATABASE: "qanda"
