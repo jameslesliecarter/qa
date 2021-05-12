@@ -1,9 +1,4 @@
 services:
-  web:
-    build: ./server/
-    ports:
-      - "80:80"
-
   data:
     image: mysql:latest
     container_name: "mysql-container"
@@ -17,3 +12,9 @@ services:
       MYSQL_USER: "student"
       MYSQL_PASSWORD: "student"
       MYSQL_HOST: "data"
+
+  web:
+    build: ./server/
+    ports:
+      - "80:80"
+
