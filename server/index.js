@@ -23,6 +23,7 @@ app.get('/qa/questions/', (req, res) => {
       res.end();
     })
     .catch((error) => {
+      res.send(error);
       res.status(404);
       res.end();
     })
@@ -41,6 +42,7 @@ app.get('/qa/questions/:question_id/answers', (req, res) => {
       res.end();
     })
     .catch((error) => {
+      res.send(error);
       res.status(404);
       res.end();
     })
@@ -60,6 +62,7 @@ app.post('/qa/questions', (req, res) => {
       res.end();
     })
     .catch((error) => {
+      res.send(error);
       res.status(500);
       res.end();
     });
@@ -80,7 +83,7 @@ app.post('/qa/questions/:question_id/answers', (req, res) => {
       res.end();
     })
     .catch((error) => {
-      console.error('Answer POST error: ', error);
+      res.send(error);
       res.status(500);
       res.end();
     });
@@ -96,6 +99,7 @@ app.put('/qa/questions/:question_id/helpful', (req, res) => {
       res.end();
     })
     .catch((error) => {
+      res.send(error);
       res.status(500);
       res.end();
     });
@@ -110,7 +114,9 @@ app.put('/qa/questions/:question_id/report', (req, res) => {
       res.end();
     })
     .catch((error) => {
-      console.error('Question report PUT error: ', error);
+      res.send(error);
+      res.status(500);
+      res.end();
     });
 });
 
@@ -123,7 +129,9 @@ app.put('/qa/answers/:answer_id/helpful', (req, res) => {
       res.end();
     })
     .catch((error) => {
-      console.error('Answer helpfulness PUT error: ', error);
+      res.send(error);
+      res.status(500);
+      res.end();
     });
 });
 
@@ -136,7 +144,9 @@ app.put('/qa/answers/:answer_id/report', (req, res) => {
       res.end();
     })
     .catch((error) => {
-      console.error('Answer report PUT error: ', error);
+      res.send(error);
+      res.status(500);
+      res.end();
     });
 });
 
