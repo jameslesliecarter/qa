@@ -1,4 +1,11 @@
 services:
+  web:
+    depends_on:
+      - "data"
+    build: ./server/
+    ports:
+      - "80:80"
+
   data:
     image: mysql:latest
     container_name: "mysql-container"
@@ -12,9 +19,7 @@ services:
       MYSQL_USER: "student"
       MYSQL_PASSWORD: "student"
       MYSQL_HOST: "data"
+      ALLOW_PUBLIC_KEY_RETRIEVAL: "true"
 
-  web:
-    build: ./server/
-    ports:
-      - "80:80"
+
 

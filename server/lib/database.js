@@ -3,7 +3,7 @@ const mysql = require('mysql');
 class Database {
   constructor( config ) {
     this.connection = mysql.createPool( {
-      host: "mysql-container",
+      host: "localhost",
       user: "student",
       password: "student",
       database: "qanda"

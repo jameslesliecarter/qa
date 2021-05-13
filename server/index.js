@@ -152,6 +152,7 @@ app.put('/qa/answers/:answer_id/report', (req, res) => {
 
 // ===== TEST=====
 app.get('/test', (req, res) => {
+  console.log('env: ', process.env.LC_TERMINAL);
   console.log('host: ', req.headers.host);
   res.status(200);
   res.send('hello world');
