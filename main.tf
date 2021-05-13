@@ -21,4 +21,9 @@ resource "aws_instance" "app_server" {
   tags = {
     "Name" = "QA"
   }
+  ebs_block_device {
+    device_name = "/dev/xvda"
+    volume_type = "gp2"
+    volume_size = 16
+  }
 }
