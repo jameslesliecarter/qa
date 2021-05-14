@@ -2,10 +2,10 @@ const mysql = require('mysql');
 
 class Database {
   constructor( config ) {
-    this.connection = mysql.createPool( {
+    this.connection = mysql.createConnection( {
       host: "mysql-container",
       user: "student",
-      password: "student",
+      password: "Quechua99!",
       database: "qanda"
     } );
   }
